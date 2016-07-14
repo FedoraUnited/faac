@@ -1,6 +1,6 @@
 Name:           faac
 Version:        1.28
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Encoder and encoding library for MPEG2/4 AAC
 
 Group:          Applications/Multimedia
@@ -75,6 +75,10 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 %{_includedir}/*.h
 
 %changelog
+
+* Fri Jul 08 2016 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.28-8
+- Massive rebuild
+
 * Sat Dec  6 2014 Nicolas Chauvet <kwizart@gmail.com> - 1.28-7
 - Fix build with libmp4v2-devel - rfbz#3188
 - Clean-up spec file

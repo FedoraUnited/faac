@@ -4,7 +4,7 @@
  
 Summary:        Encoder and encoding library for MPEG2/4 AAC
  
-Version:        1.28
+Version:        1.29.3
  
 License:        LGPLv2+
  

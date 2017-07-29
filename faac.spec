@@ -1,18 +1,15 @@
 Name:           faac
-Version:        1.28
-Release:        8%{?dist}
+Version:        1.29.3
+Release:        3%{?dist}
 Summary:        Encoder and encoding library for MPEG2/4 AAC
 
 Group:          Applications/Multimedia
 License:        LGPLv2+
 URL:            http://www.audiocoding.com/
-Source0:        http://downloads.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
-Patch0:         %{name}-libmp4v2.patch
+Source0:        http://downloads.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
 
 BuildRequires:  libtool
 BuildRequires:  libmp4v2-devel
-
-
 
 %description
 FAAC is an AAC audio encoder. It currently supports MPEG-4 LTP, MAIN and LOW
@@ -33,30 +30,24 @@ This package contains development files and documentation for libfaac.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1 -b .mp4v2
-#fix permissions
-find . -type f \( -name \*.h -or -name \*.c \) -exec chmod 644 {} \;
-chmod 644 AUTHORS COPYING ChangeLog NEWS README TODO docs/*
 
 #fix encoding
 /usr/bin/iconv -f iso8859-1 -t utf-8 AUTHORS > AUTHORS.conv && touch -r AUTHORS AUTHORS.conv && /bin/mv -f AUTHORS.conv AUTHORS
 
-# Autotools
-autoreconf -vif
-
-
 %build
+./bootstrap
 %configure --disable-static
-# remove rpath from libtool
-sed -i.rpath 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
+%make_install
 
+find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 
+# License fix
+install -Dm644 libfaac/kiss_fft/COPYING \
+    $RPM_BUILD_ROOT/usr/share/licenses/faac/LICENSE
 
 %post -p /sbin/ldconfig
 
@@ -64,17 +55,20 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 
 
 %files 
-%doc AUTHORS COPYING ChangeLog NEWS README TODO docs/*
+%doc AUTHORS ChangeLog NEWS README TODO docs/*
+%license /usr/share/licenses/faac/LICENSE
 %{_bindir}/*
 %{_libdir}/*.so.*
 %{_mandir}/man1/%{name}*
 
 %files devel
-%exclude  %{_libdir}/*.la
 %{_libdir}/*.so
 %{_includedir}/*.h
 
 %changelog
+
+* Fri Jul 28 2017 David Va <davidva AT tutanota DOT com> - 1.29.3-3
+- Updated to 1.29.3-3
 
 * Fri Jul 08 2016 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.28-8
 - Massive rebuild
@@ -125,10 +119,10 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 * Tue Jul 22 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 1.25-5
 - rebuild for RPM Fusion
 
-* Sat Sep 17 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 1.25-4
+* Mon Sep 17 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 1.25-4
 - update license tag
 
-* Sat Sep 17 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 1.25-3
+* Mon Sep 17 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 1.25-3
 - incorporate some minor adjustments from the freshrpms pacakge
 
 * Sun Dec 17 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> 1.25-2

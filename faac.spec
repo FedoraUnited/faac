@@ -11,6 +11,7 @@ URL:            http://www.audiocoding.com/
 Source0:        https://sourceforge.net/projects/faac/files/faac-src/%{name}-%{ver_base}/%{name}-%{version}.tar.gz
 
 BuildRequires:  libtool
+BuildRequires:	chrpath
 BuildRequires:  libmp4v2-devel
 
 %description
@@ -45,6 +46,9 @@ make %{?_smp_mflags}
 %make_install
 
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
+
+# Remove rpath.
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/faac
 
 %post -p /sbin/ldconfig
 

@@ -1,12 +1,14 @@
+%global ver_base 1.29
+
 Name:           faac
-Version:        1.29.3
-Release:        3%{?dist}
+Version:        1.29.7.5
+Release:        1%{?dist}
 Summary:        Encoder and encoding library for MPEG2/4 AAC
 
 Group:          Applications/Multimedia
 License:        LGPLv2+
 URL:            http://www.audiocoding.com/
-Source0:        http://downloads.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
+Source0:        https://sourceforge.net/projects/faac/files/faac-src/%{name}-%{ver_base}/%{name}-%{version}.tar.gz
 
 BuildRequires:  libtool
 BuildRequires:  libmp4v2-devel
@@ -35,7 +37,6 @@ This package contains development files and documentation for libfaac.
 /usr/bin/iconv -f iso8859-1 -t utf-8 AUTHORS > AUTHORS.conv && touch -r AUTHORS AUTHORS.conv && /bin/mv -f AUTHORS.conv AUTHORS
 
 %build
-./bootstrap
 %configure --disable-static
 make %{?_smp_mflags}
 
@@ -45,10 +46,6 @@ make %{?_smp_mflags}
 
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 
-# License fix
-install -Dm644 libfaac/kiss_fft/COPYING \
-    $RPM_BUILD_ROOT/usr/share/licenses/faac/LICENSE
-
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
@@ -56,7 +53,7 @@ install -Dm644 libfaac/kiss_fft/COPYING \
 
 %files 
 %doc AUTHORS ChangeLog NEWS README TODO docs/*
-%license /usr/share/licenses/faac/LICENSE
+%license COPYING
 %{_bindir}/*
 %{_libdir}/*.so.*
 %{_mandir}/man1/%{name}*
@@ -66,6 +63,9 @@ install -Dm644 libfaac/kiss_fft/COPYING \
 %{_includedir}/*.h
 
 %changelog
+
+* Sat Sep 23 2017 David Va <davidva AT tutanota DOT com> - 1.29.7.5-1
+- Updated to 1.29.7.5-1
 
 * Fri Jul 28 2017 David Va <davidva AT tutanota DOT com> - 1.29.3-3
 - Updated to 1.29.3-3

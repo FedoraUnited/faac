@@ -1,7 +1,7 @@
 %global ver_base 1.29
 
 Name:           faac
-Version:        1.29.8.3
+Version:        1.29.9
 Release:        1%{?dist}
 Summary:        Encoder and encoding library for MPEG2/4 AAC
 
@@ -67,6 +67,9 @@ chrpath --delete $RPM_BUILD_ROOT%{_bindir}/faac
 %{_includedir}/*.h
 
 %changelog
+
+* Sun Nov 05 2017 David Va <davidva AT tutanota DOT com> - 1.29.9-1
+- Updated to 1.29.9
 
 * Wed Oct 25 2017 David Va <davidva AT tutanota DOT com> - 1.29.8.3-1
 - Updated to 1.29.8.3

@@ -1,14 +1,14 @@
-%global ver_base 1.29
+%global ver_base 1.30
 
 Name:           faac
-Version:        1.29.9.2
+Version:        1.30
 Release:        1%{?dist}
 Summary:        Encoder and encoding library for MPEG2/4 AAC
 
 Group:          Applications/Multimedia
 License:        LGPLv2+
-URL:            http://www.audiocoding.com/
-Source0:        https://sourceforge.net/projects/faac/files/faac-src/%{name}-%{ver_base}/%{name}-%{version}.tar.gz
+URL:            https://sourceforge.net/projects/faac/
+Source0:        https://github.com/knik0/faac/archive/1_30.tar.gz
 
 BuildRequires:  libtool
 BuildRequires:	chrpath
@@ -32,14 +32,18 @@ multichannel and gapless encoding.
 This package contains development files and documentation for libfaac.
 
 %prep
-%setup -q -n %{name}-%{version}
+%autosetup -n %{name}-1_30
 
 #fix encoding
 /usr/bin/iconv -f iso8859-1 -t utf-8 AUTHORS > AUTHORS.conv && touch -r AUTHORS AUTHORS.conv && /bin/mv -f AUTHORS.conv AUTHORS
 
+sed -i 's|/bin/sh|/usr/bin/bash|g' bootstrap
+
 %build
+
+./bootstrap
 %configure --disable-static
-make %{?_smp_mflags}
+%make_build
 
 
 %install
@@ -67,6 +71,9 @@ chrpath --delete $RPM_BUILD_ROOT%{_bindir}/faac
 %{_includedir}/*.h
 
 %changelog
+
+* Fri Oct 18 2019 David Va <davidva AT tuta DOT io> - 1.30-1
+- Updated to 1.30-1
 
 * Wed Nov 15 2017 David Va <davidva AT tutanota DOT com> - 1.29.9.2-1
 - Updated to 1.29.9.2

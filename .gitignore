@@ -3,4 +3,5 @@ BUILDROOT/*
 RPMS/*
 SPECS/*
 SRPMS/*
-faac*.tar.bz2
+*.tar.bz2
+*.rpm
